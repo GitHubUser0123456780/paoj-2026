@@ -1,5 +1,10 @@
 package com.pao.laboratory03.collections;
 
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * Exercițiul 1 — Colecții: HashMap și TreeMap
  *
@@ -51,6 +56,49 @@ package com.pao.laboratory03.collections;
 public class Main {
     public static void main(String[] args) {
         // TODO: implementează cele 3 părți de mai sus
+        // Partea A
+        String[] words = {"java", "python", "java", "c++", "python", "java", "rust", "c++", "go"};
+        HashMap<String,Integer> words_count = new HashMap<>();
+        System.out.println("Construim HashMap ...\n");
+        for(String s:words)
+            words_count.put(s,words_count.getOrDefault(s,0)+1);
+        System.out.println("Hashpmap-ul este: \n");
+        System.out.println(words_count);
+
+        System.out.println("Array-ul contine string-ul rust?: " + words_count.containsKey("rust"));
+
+        System.out.println("Toate key-urile din map: \n" + words_count.keySet());
+        System.out.println("\nToate valorile din map: \n" + words_count.values());
+
+        System.out.println("Afisam perechile din map cu entrySet():\n");
+        for(var entry:words_count.entrySet())
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+
+        //Partea B
+        System.out.println("Cream TreeMap folosind Hashmap-ul...\n");
+        TreeMap<String,Integer> tree_word = new TreeMap<>(words_count);
+        System.out.println(tree_word);
+
+        System.out.println("Prima cheie din tree: " + tree_word.firstKey() + "\nUltima cheie din tree: " + tree_word.lastKey());
+
+        //Partea C
+        HashMap<String,List<String>> studenti = new HashMap<>();
+        List<String> studenti_PAOJ = new ArrayList<>();
+        studenti_PAOJ.add("Ana");
+        studenti_PAOJ.add("Mihai");
+        studenti_PAOJ.add("Ion");
+        studenti.put("PAOJ",studenti_PAOJ);
+        List<String> studenti_BD = new ArrayList<>();
+        studenti_BD.add("Ana");
+        studenti_BD.add("Elena");
+        studenti.put("BD",studenti_BD);
+
+        System.out.println("HashMap-ul inainte de actualizare: " + studenti);
+
+        System.out.println("\nStudentii la PAOJ: " + studenti.get("PAOJ"));
+        studenti.putIfAbsent("BD", new ArrayList<>());
+        studenti.get("BD").add("George");
+        System.out.println("Studentii la BD (dupa actualizare): " + studenti.get("BD"));
     }
 }
 
