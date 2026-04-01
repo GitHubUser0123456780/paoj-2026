@@ -1,68 +1,76 @@
 package com.pao.laboratory06.exercise2;
-
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 public class Main {
     public static void main(String[] args) {
-//        Scanner in = new Scanner(System.in);
-//        int n = in.nextInt();
-//        List<Colaborator> colaboratori = new ArrayList<>();
-//        for (int i = 0; i < n; i++) {
-//            String tip = in.next();
-//            Colaborator c = switch (tip) {
-//                case "CIM" -> {
-//                    CIMColaborator obj = new CIMColaborator();
-//                    obj.citeste(in);
-//                    yield obj;
-//                }
-//                case "PFA" -> {
-//                    PFAColaborator obj = new PFAColaborator();
-//                    obj.citeste(in);
-//                    yield obj;
-//                }
-//                case "SRL" -> {
-//                    SRLColaborator obj = new SRLColaborator();
-//                    obj.citeste(in);
-//                    yield obj;
-//                }
-//                default -> throw new IllegalArgumentException("Tip necunoscut: " + tip);
-//            };
-//            colaboratori.add(c);
-//        }
-//        // Sortează și afișează pe tip, fiecare descrescător după venit net anual
-//        for (TipColaborator tipColab : TipColaborator.values()) {
-//            colaboratori.stream()
-//                    .filter(c -> c.getTip() == tipColab)
-//                    .sorted((a, b) -> Double.compare(b.calculeazaVenitNetAnual(), a.calculeazaVenitNetAnual()))
-//                    .forEach(Colaborator::afiseaza);
-//        }
-//        // Colaborator cu venit net maxim
-//        Colaborator max = colaboratori.stream().max(Comparator.comparingDouble(Colaborator::calculeazaVenitNetAnual)).orElse(null);
-//        System.out.printf("\nColaborator cu venit net maxim: ");
-//        if (max != null) max.afiseaza();
-//        // Colaboratori persoane juridice (SRL)
-//        System.out.println("\nColaboratori persoane juridice:");
-//        colaboratori.stream()
-//                .filter(c -> c instanceof PersoanaJuridica)
-//                .sorted((a, b) -> Double.compare(b.calculeazaVenitNetAnual(), a.calculeazaVenitNetAnual()))
-//                .forEach(Colaborator::afiseaza);
-//        // Sume și număr colaboratori pe tip
-//        System.out.println("\nSume și număr colaboratori pe tip:");
-//        Map<TipColaborator, Double> suma = new EnumMap<>(TipColaborator.class);
-//        Map<TipColaborator, Integer> numar = new EnumMap<>(TipColaborator.class);
-//        var typesOfCollaborators = new HashSet<TipColaborator>();
-//        for (Colaborator c : colaboratori) {
-//            typesOfCollaborators.add(c.getTip());
-//        }
-//        for (TipColaborator t : typesOfCollaborators) {
-//            suma.put(t, 0.0);
-//            numar.put(t, 0);
-//        }
-//        for (Colaborator c : colaboratori) {
-//            TipColaborator t = c.getTip();
-//            suma.put(t, suma.get(t) + c.calculeazaVenitNetAnual());
-//            numar.put(t, numar.get(t) + 1);
-//        }
-//        for (TipColaborator t : TipColaborator.values()) {
-//            System.out.printf("%s: suma = %.2f lei, număr = %d\n", t, suma.get(t), numar.get(t));
-//        }
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        List<Colaborator> colaboratori = new ArrayList<>();
+        for(int i=1;i<=n;i++){
+            String tip = scanner.next();
+            switch(tip){
+                case "CIM":
+                    {
+                        CIMColaborator obj = new CIMColaborator();
+                        obj.citeste(scanner);
+                        colaboratori.add(obj);
+                        break;
+                    }
+                case "PFA":
+                    {
+                        PFAColaborator obj = new PFAColaborator();
+                        obj.citeste(scanner);
+                        colaboratori.add(obj);
+                        break;
+                    }
+                case "SRL":
+                    {
+                        SRLColaborator obj = new SRLColaborator();
+                        obj.citeste(scanner);
+                        colaboratori.add(obj);
+                        break;
+                    }
+            }
+        }
+        //1. Sorteaza dupa venit net anual descrescator
+        for(TipColaborator tip:TipColaborator.values())
+        {
+            colaboratori.stream()
+                .filter(obj -> obj.getTip() == tip)
+                .sorted((obj1,obj2) -> Double.compare(obj2.calculeazaVenitNetAnual(),obj1.calculeazaVenitNetAnual()))
+                .forEach(Colaborator::afiseaza);
+        }
+        //2.Colaboratorul cu venit net maxim
+        Colaborator max = colaboratori.stream().max(Comparator.comparingDouble(Colaborator::calculeazaVenitNetAnual)).orElse(null);
+        if(max!=null)
+        {
+            System.out.println("Colaboratorul cu venit net anual maxim: ");
+            max.afiseaza();
+        }
+        //3.Afiseaza doar persoane juridice
+        System.out.println("\nColaboratorii persoane juridice:\n");
+        colaboratori.stream().filter(obj -> obj instanceof PersoanaJuridica).forEach(Colaborator::afiseaza);
+        //4.Pt fiercare tip suma totala si nr colaboratori
+        Map<TipColaborator, Double> suma = new EnumMap<>(TipColaborator.class);
+        Map<TipColaborator, Integer> numar = new EnumMap<>(TipColaborator.class);
+        for(TipColaborator t:TipColaborator.values())
+        {
+            suma.put(t,0.0);
+            numar.put(t,0);
+        }
+        for(Colaborator c:colaboratori)
+        {
+            suma.put(c.getTip(),suma.get(c.getTip()) + c.calculeazaVenitNetAnual());
+            numar.put(c.getTip(),numar.get(c.getTip()) + 1);
+        }
+        System.out.println("\n--Suma si nr pe tipuri--\n");
+        for(TipColaborator t:TipColaborator.values())
+            System.out.println(t + ": suma = " + suma.get(t) + "lei, numar = " + numar.get(t)+'\n');
     }
-}
+}//venit net = 120 000, impozit = 0.1*120 000 = 12 000
+// 0.1*120 000 = 12 000 CASS
+// 24 300 CAS
