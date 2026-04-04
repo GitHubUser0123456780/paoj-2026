@@ -1,7 +1,6 @@
 package com.pao.laboratory07.exercise2;
 
 import java.util.*;
-import com.pao.laboratory07.exercise1.OrderState;
 
 public class Main {
     public static void main(String[] args) {
@@ -47,5 +46,6 @@ public class Main {
         if (nrGift > 0)
             System.out.printf("GIFT: suma = 0.00 lei, numar = %d\n", nrGift);
         System.out.printf("Total platit: %.2f lei\n", sumaStandard + sumaDiscounted);
+        sc.close();
     }
 }

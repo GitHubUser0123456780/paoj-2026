@@ -1,5 +1,6 @@
-package com.pao.laboratory07.exercise1;
+package com.pao.laboratory07.exercise1.checker;
 
+import com.pao.laboratory07.exercise1.Main;
 import com.pao.test.IOTest;
 
 public class Checker {
