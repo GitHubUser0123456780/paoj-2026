@@ -1,5 +1,6 @@
 package com.pao.laboratory14.exercise2.util;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -20,14 +21,7 @@ public class DatabaseConnection {
 
     private DatabaseConnection() throws IOException, SQLException {
         Properties props = new Properties();
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("db.properties")) {
-            if (is == null) {
-                throw new IOException(
-                    "db.properties nu a fost gasit pe classpath. " +
-                    "Marcheaza 'exercise2/resources/' ca Resources Root in IntelliJ: " +
-                    "clic dreapta -> Mark Directory as -> Resources Root"
-                );
-            }
+        try (InputStream is = new FileInputStream("src/com/pao/laboratory14/exercise2/resources/db.properties")) {
             props.load(is);
         }
         String url      = props.getProperty("db.url");
